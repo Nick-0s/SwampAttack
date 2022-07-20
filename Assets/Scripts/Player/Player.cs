@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
@@ -12,16 +11,18 @@ public class Player : MonoBehaviour
 
     public int Money {get; private set;} = 0;
 
+    public event UnityAction<int, int> HealthChanged;
+    public event UnityAction<Weapon, Weapon> WeaponChanged;
+    public event UnityAction MoneyChanged;
     public event UnityAction Died;
     private Weapon _currentWeapon;
+    private int _currentWeaponNumber = 0;
     private int _currentHealth;
-    private Animator _animator;
 
     private void Start()
     {
-        _currentWeapon = _weapons[0];
+        SetWeapon(_weapons[_currentWeaponNumber]);
         _currentHealth = _maxHealth;
-        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -35,20 +36,63 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
+        HealthChanged?.Invoke(_currentHealth, _maxHealth);
 
         if(_currentHealth <= 0)
+        {
+            _currentHealth = 0;
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
+
             Die();
+        }        
+    }
+
+    public void TakeNextWeapon()
+    {
+        if(_currentWeaponNumber == _weapons.Count - 1)
+            _currentWeaponNumber = 0;
+        else
+            _currentWeaponNumber++;
+
+        SetWeapon(_weapons[_currentWeaponNumber]);
+    }
+
+    public void TakePreviousWeapon()
+    {
+        if(_currentWeaponNumber == 0)
+            _currentWeaponNumber = _weapons.Count - 1;
+        else
+            _currentWeaponNumber--;
+
+        SetWeapon(_weapons[_currentWeaponNumber]);
+    }
+
+    public void BuyWeapon(Weapon weapon)
+    {
+        Money -= weapon.Price;
+        MoneyChanged?.Invoke();
+
+        _weapons.Add(weapon);
+    }
+
+    public void OnEnemyDied(int reward)
+    {
+        Money += reward;
+        MoneyChanged?.Invoke();
     }
 
     private void Die()
     {
         Died?.Invoke();
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
-    private void OnEnemyDied(int reward)
+    private void SetWeapon(Weapon weapon)
     {
-        Money += reward;
+        Weapon lastWeapon = _currentWeapon;
+
+        _currentWeapon = weapon;
+        WeaponChanged?.Invoke(lastWeapon, _currentWeapon);
     }
 }

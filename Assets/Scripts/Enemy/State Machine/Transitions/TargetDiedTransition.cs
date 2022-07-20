@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class TargetDiedTransition : Transition
 {
-    private void Update()
+    private void OnDisable()
     {
-        if(Target == null)
-            NeedTransit = true;
+        Target.Died -= RequestTransit;        
+    }
+
+    public override void Init(Player target)
+    {
+        base.Init(target);
+        Target.Died += RequestTransit;
+    }
+
+    private void RequestTransit()
+    {
+        NeedTransit = true;
     }
 }

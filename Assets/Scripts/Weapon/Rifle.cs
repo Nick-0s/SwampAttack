@@ -4,8 +4,25 @@ using UnityEngine;
 
 public class Rifle : Weapon
 {
+
     public override void Shoot(Transform shootPoint)
     {
-        Instantiate(Bullet, shootPoint.position, Quaternion.identity);
+        if(IsReadyToShoot)
+        {
+            IsReadyToShoot = false;
+            ShotsDone++;
+            InvokeShooted();
+            Instantiate(Bullet, shootPoint.position, Quaternion.identity);
+
+            Coroutine delay = StartCoroutine(ShootingDelay());
+
+            if(ShotsDone == ShotsBeforeReloading)
+            {
+                if(delay != null)
+                    StopCoroutine(delay);
+
+                Reload();
+            }
+        }
     }
 }

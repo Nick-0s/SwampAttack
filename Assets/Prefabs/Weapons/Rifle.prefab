@@ -44,8 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96acdf077c0661e41b6442962c67f8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lable: "\u0414\u0435\u0434\u043E\u0432\u043E \u0420\u0443\u0436\u044C\u0435"
-  _price: 5
+  _lable: "\u0414\u0435\u0434\u043E\u0432\u0430 \u0434\u0432\u0443\u0441\u0442\u0432\u043E\u043B\u043A\u0430"
+  _price: 15
   _icon: {fileID: 21300000, guid: eca2d0867acec7842bd0a53221e0ede3, type: 3}
   _isBought: 1
+  _reloadingTime: 1.5
+  _delayBetweenShots: 0.2
+  ShotsBeforeReloading: 2
   Bullet: {fileID: -8990372148728578821, guid: 75fea79d26d118b41809b5f581d50ccd, type: 3}
+  IsReadyToShoot: 1

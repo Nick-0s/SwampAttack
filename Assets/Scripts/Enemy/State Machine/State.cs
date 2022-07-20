@@ -32,9 +32,11 @@ public class State : MonoBehaviour
     public State GetNext()
     {
         foreach(var transition in _transitions)
+        {
             if(transition.NeedTransit)
                 return transition.TargetState;
-
+        }
+        
         return null;
     }
 
