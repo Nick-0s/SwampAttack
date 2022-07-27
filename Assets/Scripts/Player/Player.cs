@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     {
         SetWeapon(_weapons[_currentWeaponNumber]);
         _currentHealth = _maxHealth;
+        HealthChanged?.Invoke(_currentHealth, _maxHealth);
     }
 
     private void Update()

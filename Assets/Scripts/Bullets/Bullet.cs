@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private int _damage;
+    [SerializeField] protected int Damage;
     [SerializeField] private float _speed;
+
+    protected Vector2 _direction = Vector2.left;
     
     private void Update()
     {
-        transform.Translate(Vector2.left * _speed * Time.deltaTime, Space.World);
+        transform.Translate(_direction * _speed * Time.deltaTime, Space.World);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent<Enemy>(out Enemy enemy))
-            enemy.TakeDamage(_damage);
+            enemy.TakeDamage(Damage);
 
         Destroy(gameObject);
     }

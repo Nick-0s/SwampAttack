@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MoveState : State
 {
-    [SerializeField] private float _speed;
     private string _move = "Move";
 
     private void OnEnable()
@@ -14,6 +13,6 @@ public class MoveState : State
 
     private void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, Target.transform.position, _speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, Target.transform.position, Enemy.Speed * Time.deltaTime);
     }
 }

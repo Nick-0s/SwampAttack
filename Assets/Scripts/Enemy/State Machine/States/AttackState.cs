@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    [SerializeField] private int _damage;
-    [SerializeField] private float _delay;
-
     private float _cooldown;
     private string _attack = "Attack";
 
@@ -14,17 +11,16 @@ public class AttackState : State
     {
         if (_cooldown <= 0)
         {
-            Attack();
-
-            _cooldown = _delay;
+            PlayAttack();
+            Enemy.Attack();
+            _cooldown = Enemy.AttackDelay;
         }
         
         _cooldown -= Time.deltaTime;
     }
 
-    private void Attack()
+    private void PlayAttack()
     {
         Animator.Play(_attack);
-        Target.TakeDamage(_damage);
     }
 }

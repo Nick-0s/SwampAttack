@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Enemy))]
 public class State : MonoBehaviour
 {
     [SerializeField] private List<Transition> _transitions;
     protected Player Target { get; private set; }
     protected Animator Animator;
+    protected Enemy Enemy;
 
     private void Awake()
     {
         Animator = GetComponent<Animator>();
+        Enemy = GetComponent<Enemy>();
     }
 
     public void Enter(Player target)
